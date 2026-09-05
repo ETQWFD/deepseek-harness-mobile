@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- DeepSeek 风格：白色抽象D形/无限符号 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,24 C42,24 32,34 32,46 L32,62 C32,74 42,84 54,84 C66,84 76,74 76,62 L76,54 L66,54 L66,62 C66,68 61,73 54,73 C47,73 42,68 42,62 L42,46 C42,40 47,35 54,35 C61,35 66,40 66,46 L66,50 L76,50 L76,46 C76,34 66,24 54,24 Z M50,44 L50,64 L58,64 L58,44 Z"/>
+    <!-- 装饰点 -->
+    <path
+        android:fillColor="#4A9EFF"
+        android:pathData="M70,30 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0"/>
+</vector>

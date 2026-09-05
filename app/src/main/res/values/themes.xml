@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.DshAndroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#1A1A2E</item>
+        <item name="colorPrimaryDark">#0F0F1A</item>
+        <item name="colorAccent">#3F51B5</item>
+        <item name="android:statusBarColor">#0F0F1A</item>
+        <item name="android:windowBackground">#1A1A2E</item>
+    </style>
+</resources>

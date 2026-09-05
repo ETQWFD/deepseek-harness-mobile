@@ -1,0 +1,43 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+*.apk
+*.ap_
+*.aab
+*.keystore
+!dsh-release.keystore
+
+# 大文件 - 从Release下载
+app/src/main/assets/model.gguf
+app/src/main/assets/dsh-app.zip
+app/src/main/assets/native-comp-*.zip
+android-sdk/
+gradle.zip
+gradle-*/
+jdk-*/
+*.tar.gz
+*.zip
+
+# 构建产物
+app/build/
+build/
+*.class
+*.jar
+
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+
+# 系统
+.DS_Store
+Thumbs.db
