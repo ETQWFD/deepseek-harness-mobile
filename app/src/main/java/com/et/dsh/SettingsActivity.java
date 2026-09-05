@@ -261,7 +261,7 @@ public class SettingsActivity extends AppCompatActivity {
         root.addView(updateBtn);
 
         TextView versionInfo = new TextView(this);
-        versionInfo.setText("当前版本: v2.39 · ETC+KU终极版\n更新源: GitHub Release");
+        versionInfo.setText("当前版本: v4.1 · ETC+KU终极版\n更新源: GitHub Release");
         versionInfo.setTextColor(0xFF555577);
         versionInfo.setTextSize(10);
         versionInfo.setPadding(16, 8, 16, 0);
@@ -344,7 +344,7 @@ public class SettingsActivity extends AppCompatActivity {
                     final String latestVersion = tagName.replace("v", "").trim();
                     final String releaseUrl = htmlUrl;
                     final String releaseNotes = body;
-                    final String currentVersion = "2.39";
+                    final String currentVersion = "4.1";
                     runOnUiThread(() -> {
                         if (latestVersion.isEmpty()) {
                             Toast.makeText(SettingsActivity.this, "无法获取版本信息", Toast.LENGTH_SHORT).show();
