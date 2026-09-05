@@ -20,6 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private EditText apiBaseUrlInput;
     private EditText apiKeyInput;
+    private EditText modelNameInput;
     private RadioGroup modelModeGroup;
     private CheckBox bgCheckBox;
     private CheckBox shizukuCheckBox;
@@ -103,8 +104,31 @@ public class SettingsActivity extends AppCompatActivity {
         hint2.setText("请输入官方 DeepSeek API Key。Key 仅保存在本地，不会上传。");
         hint2.setTextColor(0xFF666688);
         hint2.setTextSize(11);
-        hint2.setPadding(0, 0, 0, 32);
+        hint2.setPadding(0, 0, 0, 24);
         root.addView(hint2);
+        // 模型名称
+        TextView label2b = new TextView(this);
+        label2b.setText("模型名称 (Model Name) *必填");
+        label2b.setTextColor(0xFFCCCCCC);
+        label2b.setTextSize(14);
+        label2b.getPaint().setFakeBoldText(true);
+        root.addView(label2b);
+        modelNameInput = new EditText(this);
+        modelNameInput.setText(prefs.getString("model_name", "deepseek-chat"));
+        modelNameInput.setHint("deepseek-chat");
+        modelNameInput.setTextColor(0xFFFFFFFF);
+        modelNameInput.setHintTextColor(0xFF444466);
+        modelNameInput.setBackgroundColor(0xFF1A1A2E);
+        modelNameInput.setPadding(32, 24, 32, 24);
+        modelNameInput.setTextSize(13);
+        modelNameInput.setLayoutParams(etParams);
+        root.addView(modelNameInput);
+        TextView hint2b = new TextView(this);
+        hint2b.setText("在线API使用的模型名称。常用: deepseek-chat, deepseek-reasoner, gpt-4o, claude-3-opus。不填默认 deepseek-chat。");
+        hint2b.setTextColor(0xFF666688);
+        hint2b.setTextSize(11);
+        hint2b.setPadding(0, 0, 0, 32);
+        root.addView(hint2b);
 
         // 模型模式选择
         TextView label3 = new TextView(this);
@@ -237,7 +261,7 @@ public class SettingsActivity extends AppCompatActivity {
         root.addView(updateBtn);
 
         TextView versionInfo = new TextView(this);
-        versionInfo.setText("当前版本: v2.37 · ETC+KU终极版\n更新源: GitHub Release");
+        versionInfo.setText("当前版本: v2.38 · ETC+KU终极版\n更新源: GitHub Release");
         versionInfo.setTextColor(0xFF555577);
         versionInfo.setTextSize(10);
         versionInfo.setPadding(16, 8, 16, 0);
@@ -251,6 +275,7 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("api_base_url", apiBaseUrlInput.getText().toString().trim());
         editor.putString("api_key", apiKeyInput.getText().toString().trim());
+        editor.putString("model_name", modelNameInput.getText().toString().trim());
         int selectedId = modelModeGroup.getCheckedRadioButtonId();
         if (selectedId != -1) {
             RadioButton rb = findViewById(selectedId);
@@ -274,7 +299,7 @@ public class SettingsActivity extends AppCompatActivity {
         Toast.makeText(this, "正在检测更新...", Toast.LENGTH_SHORT).show();
         new Thread(() -> {
             try {
-                String repoUrl = "https://api.github.com/repos/et2416444244/deepseek-harness-mobile/releases/latest";
+                String repoUrl = "https://api.github.com/repos/ETQWFD/deepseek-harness-mobile/releases/latest";
                 java.net.URL url = new java.net.URL(repoUrl);
                 java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
@@ -319,7 +344,7 @@ public class SettingsActivity extends AppCompatActivity {
                     final String latestVersion = tagName.replace("v", "").trim();
                     final String releaseUrl = htmlUrl;
                     final String releaseNotes = body;
-                    final String currentVersion = "2.37";
+                    final String currentVersion = "2.38";
                     runOnUiThread(() -> {
                         if (latestVersion.isEmpty()) {
                             Toast.makeText(SettingsActivity.this, "无法获取版本信息", Toast.LENGTH_SHORT).show();
