@@ -47,6 +47,8 @@ public class NodeService extends Service {
     private String filesDir;
     private String nativeLibDir;
     private PowerManager.WakeLock wakeLock;
+    private int restartCount = 0;
+    private static final int MAX_RESTARTS = 3;
 
     @Override
     public void onCreate() {
@@ -517,7 +519,13 @@ public class NodeService extends Service {
             int exitCode = process.waitFor();
             Log.d(TAG, "Node进程退出，代码: " + exitCode);
             if (running && !ready) {
-                broadcastStatus("进程异常退出 (code=" + exitCode + ")，3秒后自动重启...", false, null, null, 0);
+                restartCount++;
+                if (restartCount >= MAX_RESTARTS) {
+                    broadcastStatus("启动失败 (code=" + exitCode + ")，已停止自动重启。请清除应用数据后重试，或检查存储空间是否充足。", false, null, null, 0);
+                    running = false;
+                    return;
+                }
+                broadcastStatus("进程异常退出 (code=" + exitCode + ")，正在重试 (" + restartCount + "/" + MAX_RESTARTS + ")...", false, null, null, 0);
                 try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
                 if (running) {
                     ready = false;

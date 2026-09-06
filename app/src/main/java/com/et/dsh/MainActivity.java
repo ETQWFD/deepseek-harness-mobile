@@ -22,6 +22,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -29,6 +30,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import android.widget.ImageView;
+import android.os.Handler;
+import android.os.Looper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import java.net.URL;
+import java.net.HttpURLConnection;
+import java.io.InputStream;
 public class MainActivity extends AppCompatActivity {
     private TextView logView;
     private ScrollView logScroll;
@@ -43,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private String currentLanUrl;
     private StatusReceiver receiver;
     private LinearLayout root;
+    private ImageView bgImageView;
+    private Handler wallpaperHandler;
+    private Runnable wallpaperRunnable;
+    private boolean wallpaperEnabled = false;
     private static final int REQUEST_STORAGE = 1001;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +67,17 @@ public class MainActivity extends AppCompatActivity {
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[]{0xFF0A0A14, 0xFF0D1020, 0xFF0A0A14});
         root.setBackground(bg);
+        // 背景图片层（半透明二次元壁纸）
+        bgImageView = new ImageView(this);
+        bgImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        bgImageView.setAlpha(0.15f);
+        bgImageView.setVisibility(View.GONE);
+        FrameLayout rootContainer = new FrameLayout(this);
+        rootContainer.addView(bgImageView, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        rootContainer.addView(root, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        setContentView(rootContainer);
         // 标题栏
         LinearLayout titleBar = new LinearLayout(this);
         titleBar.setOrientation(LinearLayout.HORIZONTAL);
@@ -77,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         root.addView(titleBar);
         // 副标题
         TextView subtitle = new TextView(this);
-        subtitle.setText("v3.1 · ETC+KU终极版 · 移动端运行时");
+        subtitle.setText("v2.40 · ETC+KU终极版 · 移动端运行时");
         subtitle.setTextColor(0xFF555577);
         subtitle.setTextSize(12);
         subtitle.setPadding(48, 0, 48, 24);
@@ -194,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient());
         readyLayout.addView(webView);
         root.addView(readyLayout);
-        setContentView(root);
         // 注册广播
         receiver = new StatusReceiver();
         IntentFilter filter = new IntentFilter(NodeService.ACTION_STATUS);
@@ -221,12 +244,16 @@ public class MainActivity extends AppCompatActivity {
     private void applyBackground() {
         try {
             android.content.SharedPreferences prefs = getSharedPreferences("dsh_settings", MODE_PRIVATE);
-            boolean useStarryBg = prefs.getBoolean("bg_starry", false);
-            if (useStarryBg) {
-                android.graphics.drawable.Drawable bg = getResources().getDrawable(R.drawable.bg_starry);
-                root.setBackground(bg);
-                root.getBackground().setAlpha(180);
+            boolean useBg = prefs.getBoolean("bg_starry", false);
+            if (useBg) {
+                wallpaperEnabled = true;
+                bgImageView.setVisibility(View.VISIBLE);
+                root.setBackgroundColor(0xFF0A0A14);
+                startWallpaperTimer();
             } else {
+                wallpaperEnabled = false;
+                stopWallpaperTimer();
+                bgImageView.setVisibility(View.GONE);
                 android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable(
                         android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,
                         new int[]{0xFF0A0A14, 0xFF0D1020, 0xFF0A0A14});
@@ -235,6 +262,65 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             android.util.Log.w("MainActivity", "应用背景失败", e);
         }
+    }
+
+    private void startWallpaperTimer() {
+        if (wallpaperHandler == null) {
+            wallpaperHandler = new Handler(Looper.getMainLooper());
+        }
+        if (wallpaperRunnable == null) {
+            wallpaperRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (wallpaperEnabled) {
+                        loadWallpaper();
+                        wallpaperHandler.postDelayed(this, 60000);
+                    }
+                }
+            };
+        }
+        wallpaperHandler.removeCallbacks(wallpaperRunnable);
+        wallpaperHandler.post(wallpaperRunnable);
+    }
+
+    private void stopWallpaperTimer() {
+        if (wallpaperHandler != null && wallpaperRunnable != null) {
+            wallpaperHandler.removeCallbacks(wallpaperRunnable);
+        }
+    }
+
+    private void loadWallpaper() {
+        new Thread(() -> {
+            try {
+                String[] urls = {
+                    "https://api.btstu.cn/sjbz/?lx=dongman&format=images",
+                    "https://api.vvhan.com/api/acgimg",
+                    "https://api.ixiaowai.cn/api/api.php",
+                    "https://api.ghser.com/random/pc.php"
+                };
+                for (String urlStr : urls) {
+                    try {
+                        URL url = new URL(urlStr);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setConnectTimeout(8000);
+                        conn.setReadTimeout(8000);
+                        conn.setInstanceFollowRedirects(true);
+                        InputStream is = conn.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        is.close();
+                        conn.disconnect();
+                        if (bitmap != null) {
+                            runOnUiThread(() -> bgImageView.setImageBitmap(bitmap));
+                            return;
+                        }
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+            } catch (Exception e) {
+                android.util.Log.w("Wallpaper", "加载壁纸失败", e);
+            }
+        }).start();
     }
 
     private void requestPermissions() {

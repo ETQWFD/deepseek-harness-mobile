@@ -173,7 +173,7 @@ public class SettingsActivity extends AppCompatActivity {
         root.addView(label4);
 
         bgCheckBox = new CheckBox(this);
-        bgCheckBox.setText("启用星空背景图（半透明暗黑模式）");
+        bgCheckBox.setText("启用动态壁纸（每分钟更换二次元美女壁纸，半透明）");
         bgCheckBox.setTextColor(0xFFAAAAAA);
         bgCheckBox.setTextSize(13);
         bgCheckBox.setPadding(16, 12, 16, 12);
@@ -261,7 +261,7 @@ public class SettingsActivity extends AppCompatActivity {
         root.addView(updateBtn);
 
         TextView versionInfo = new TextView(this);
-        versionInfo.setText("当前版本: v3.1 · ETC+KU终极版\n更新源: GitHub Release\n\n© 2026 ETC | MIT License\n官网: https://etqwfd.github.io/deepseek-harness-mobile");
+        versionInfo.setText("当前版本: v2.40 · ETC+KU终极版\n更新源: GitHub Release\n\n© 2026 ETC | MIT License\n官网: https://etqwfd.github.io/deepseek-harness-mobile");
         versionInfo.setTextColor(0xFF555577);
         versionInfo.setTextSize(10);
         versionInfo.setPadding(16, 8, 16, 0);
@@ -344,7 +344,7 @@ public class SettingsActivity extends AppCompatActivity {
                     final String latestVersion = tagName.replace("v", "").trim();
                     final String releaseUrl = htmlUrl;
                     final String releaseNotes = body;
-                    final String currentVersion = "3.1";
+                    final String currentVersion = "2.40";
                     runOnUiThread(() -> {
                         if (latestVersion.isEmpty()) {
                             Toast.makeText(SettingsActivity.this, "无法获取版本信息", Toast.LENGTH_SHORT).show();
