@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek Harness 移动端 - 离线AI助手</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#0a0a14;color:#e0e0e0;line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+header{background:linear-gradient(135deg,#0d1b2a 0%,#1b263b 100%);padding:60px 0;text-align:center;border-bottom:1px solid #1c2541}
+header h1{font-size:2.5em;margin-bottom:10px;background:linear-gradient(90deg,#4fc3f7,#7c4dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:#8899aa;font-size:1.1em}
+nav{background:#0d1b2a;padding:15px 0;position:sticky;top:0;z-index:100;border-bottom:1px solid #1c2541}
+nav ul{list-style:none;display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+nav a{color:#8899aa;text-decoration:none;font-size:0.95em;transition:color 0.2s}
+nav a:hover{color:#4fc3f7}
+section{padding:50px 0}
+section h2{font-size:1.8em;margin-bottom:25px;color:#4fc3f7;border-left:4px solid #4fc3f7;padding-left:15px}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:30px}
+.feature-card{background:#0d1b2a;border:1px solid #1c2541;border-radius:10px;padding:25px;transition:transform 0.2s,border-color 0.2s}
+.feature-card:hover{transform:translateY(-3px);border-color:#4fc3f7}
+.feature-card h3{color:#4fc3f7;margin-bottom:10px;font-size:1.2em}
+.feature-card p{color:#8899aa;font-size:0.95em}
+.download-box{background:linear-gradient(135deg,#0d1b2a 0%,#1b263b 100%);border:1px solid #4fc3f7;border-radius:12px;padding:40px;text-align:center;margin-top:30px}
+.download-box h3{font-size:1.5em;margin-bottom:15px;color:#fff}
+.download-box p{color:#8899aa;margin-bottom:25px}
+.btn{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,#4fc3f7,#7c4dff);color:#fff;text-decoration:none;border-radius:8px;font-size:1.1em;font-weight:600;transition:opacity 0.2s}
+.btn:hover{opacity:0.9}
+.btn-secondary{background:#1c2541;margin-left:15px}
+.spec-table{width:100%;border-collapse:collapse;margin-top:20px}
+.spec-table th,.spec-table td{padding:12px 15px;text-align:left;border-bottom:1px solid #1c2541}
+.spec-table th{color:#4fc3f7;font-weight:600;width:30%}
+.spec-table td{color:#8899aa}
+.guide-steps{counter-reset:step;margin-top:20px}
+.guide-step{counter-increment:step;padding:20px 0 20px 60px;position:relative;border-bottom:1px solid #1c2541}
+.guide-step:before{content:counter(step);position:absolute;left:0;top:18px;width:36px;height:36px;background:linear-gradient(135deg,#4fc3f7,#7c4dff);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.guide-step h4{color:#e0e0e0;margin-bottom:8px}
+.guide-step p{color:#8899aa;font-size:0.95em}
+.legal-box{background:#0d1b2a;border:1px solid #1c2541;border-radius:10px;padding:30px;margin-top:20px}
+.legal-box h4{color:#ff8a65;margin-bottom:15px}
+.legal-box p{color:#8899aa;margin-bottom:10px}
+.legal-box ul{color:#8899aa;padding-left:25px;margin-bottom:15px}
+.legal-box li{margin-bottom:8px}
+footer{background:#0d1b2a;padding:40px 0;text-align:center;border-top:1px solid #1c2541;margin-top:50px}
+footer p{color:#556677;font-size:0.9em;margin-bottom:8px}
+footer a{color:#4fc3f7;text-decoration:none}
+.license-badge{display:inline-block;padding:6px 16px;background:#1c2541;border-radius:20px;color:#81c784;font-size:0.85em;margin-top:10px}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>DeepSeek Harness 移动端</h1>
+<p>离线AI助手 · 支持本地模型推理 · 32/64位双架构</p>
+</div>
+</header>
+<nav>
+<div class="container">
+<ul>
+<li><a href="#features">功能特性</a></li>
+<li><a href="#download">下载安装</a></li>
+<li><a href="#specs">系统要求</a></li>
+<li><a href="#guide">使用手册</a></li>
+<li><a href="#legal">法律声明</a></li>
+</ul>
+</div>
+</nav>
+<section id="features">
+<div class="container">
+<h2>功能特性</h2>
+<div class="feature-grid">
+<div class="feature-card">
+<h3>本地模型推理</h3>
+<p>内置0.5B参数模型，完全离线运行，无需网络即可进行AI对话和文本生成。</p>
+</div>
+<div class="feature-card">
+<h3>在线API支持</h3>
+<p>兼容DeepSeek及OpenAI格式API，可在设置中配置API地址、密钥和模型名称。</p>
+</div>
+<div class="feature-card">
+<h3>双架构支持</h3>
+<p>同时支持arm64-v8a（64位）和armeabi-v7a（32位）架构，覆盖新旧安卓设备。</p>
+</div>
+<div class="feature-card">
+<h3>局域网访问</h3>
+<p>启动后生成局域网访问地址，同一网络下的其他设备可通过浏览器访问使用。</p>
+</div>
+<div class="feature-card">
+<h3>检测更新</h3>
+<p>设置中一键检测最新版本，有更新时弹窗提示，可直接跳转下载页面。</p>
+</div>
+<div class="feature-card">
+<h3>沙箱工作目录</h3>
+<p>在/storage/emulated/0/创建独立工作目录，AI操作限制在目录范围内，保护系统安全。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="download">
+<div class="container">
+<h2>下载安装</h2>
+<div class="download-box">
+<h3>DeepSeek Harness 移动端 v3.1</h3>
+<p>安卓安装包 · 746MB · 支持32/64位 · MIT许可证</p>
+<a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases/download/v3.1/DeepSeek-Harness-Android-v3.1.apk" class="btn">下载 APK</a>
+<a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases" class="btn btn-secondary">所有版本</a>
+</div>
+</div>
+</section>
+<section id="specs">
+<div class="container">
+<h2>系统要求</h2>
+<table class="spec-table">
+<tr><th>操作系统</th><td>Android 7.0 及以上（API Level 24+）</td></tr>
+<tr><th>处理器架构</th><td>arm64-v8a（64位）/ armeabi-v7a（32位）</td></tr>
+<tr><th>存储空间</th><td>至少 2GB 可用空间（安装包746MB，解压后约1.5GB）</td></tr>
+<tr><th>运行内存</th><td>建议 3GB 及以上</td></tr>
+<tr><th>网络</th><td>本地模型无需网络；在线API需联网</td></tr>
+</table>
+</div>
+</section>
+<section id="guide">
+<div class="container">
+<h2>使用手册</h2>
+<div class="guide-steps">
+<div class="guide-step">
+<h4>安装应用</h4>
+<p>下载APK文件后，在手机上点击安装。如提示"未知来源"，请在设置中允许安装未知来源应用。</p>
+</div>
+<div class="guide-step">
+<h4>首次启动初始化</h4>
+<p>首次启动会自动解压运行时文件和本地模型，进度条实时显示进度。高配手机约1-2分钟，中配约5-10分钟，低配可能需要更长时间。请耐心等待，不要关闭应用。</p>
+</div>
+<div class="guide-step">
+<h4>开始使用</h4>
+<p>初始化完成后自动进入主界面。默认使用本地离线模型，可直接在输入框发送消息进行AI对话。</p>
+</div>
+<div class="guide-step">
+<h4>配置在线API（可选）</h4>
+<p>点击右上角设置按钮，填写API地址（如https://api.deepseek.com/v1）、API密钥和模型名称（如deepseek-chat）。模型模式选择"在线"或"自动"即可使用在线API。</p>
+</div>
+<div class="guide-step">
+<h4>局域网访问</h4>
+<p>服务启动后，主界面显示局域网访问地址。同一WiFi网络下的其他设备（手机、电脑）可在浏览器中输入该地址使用AI服务。</p>
+</div>
+<div class="guide-step">
+<h4>检测更新</h4>
+<p>在设置页面点击"检测更新"按钮，应用会自动检查GitHub Release最新版本。有更新时弹窗提示，可选择立即更新或暂不更新。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="legal">
+<div class="container">
+<h2>法律声明</h2>
+<div class="legal-box">
+<h4>MIT 许可证</h4>
+<p>本软件采用 MIT 开源许可证发布。</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</div>
+<div class="legal-box">
+<h4>禁止倒卖</h4>
+<ul>
+<li>严禁将本软件（包括修改版、打包版）用于商业售卖、付费下载等盈利行为。</li>
+<li>严禁在第三方平台以"破解版"、"付费版"等名义收费分发本软件。</li>
+<li>本软件永久免费，任何要求付费获取本软件的行为均为欺诈。</li>
+<li>允许在保留版权声明和MIT许可证的前提下自由分发、修改和使用。</li>
+</ul>
+</div>
+<div class="legal-box">
+<h4>免责声明</h4>
+<ul>
+<li>本软件按"现状"提供，开发者不对软件的稳定性、准确性做任何保证。</li>
+<li>使用本软件产生的任何直接或间接损失，开发者不承担责任。</li>
+<li>本地模型生成的内容仅供参考，不构成任何专业建议。</li>
+<li>在线API功能依赖第三方服务，服务可用性由第三方决定。</li>
+<li>用户应遵守当地法律法规，不得利用本软件从事违法活动。</li>
+</ul>
+</div>
+</div>
+</section>
+<footer>
+<div class="container">
+<p>© 2026 ETC · DeepSeek Harness 移动端</p>
+<p><a href="https://github.com/ETQWFD/deepseek-harness-mobile">GitHub 仓库</a> · <a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases">版本下载</a></p>
+<span class="license-badge">MIT License</span>
+</div>
+</footer>
+</body>
+</html>
