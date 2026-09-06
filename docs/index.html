@@ -3,182 +3,280 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DeepSeek Harness 移动端 - 在手机上运行 AI Agent</title>
-<meta name="description" content="DeepSeek Harness 移动端是一款免费开源的安卓应用，让你在手机上直接运行本地 AI 模型，支持离线推理和在线 API 切换。">
-<meta name="keywords" content="DeepSeek, AI, 安卓, 离线AI, 本地模型, Node.js, 开源, ETC">
+<title>DeepSeek Harness 移动端</title>
+<meta name="description" content="DeepSeek Harness 移动端是一款免费开源的安卓应用，可在手机上本地运行 AI 模型，支持离线推理和在线 API。">
+<meta name="keywords" content="DeepSeek, AI, Android, 离线AI, 本地模型, 开源, ETC">
 <meta name="author" content="ETC">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0f1115;--bg2:#161922;--bg3:#1c2030;--border:#2a2f3d;--text:#e4e6eb;--text2:#9ca3af;--text3:#6b7280;--accent:#4f8cff;--accent2:#3b78e7;--green:#22c55e;--red:#ef4444}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-a{color:var(--accent);text-decoration:none}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#fff;color:#1a1a1a;line-height:1.7;font-size:15px}
+a{color:#0066cc;text-decoration:none}
 a:hover{text-decoration:underline}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,17,21,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
-.brand{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:600;color:#fff}
-.brand-dot{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--accent),#7c5cfc);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-links a{color:var(--text2);font-size:14px;transition:color .15s}
-.nav-links a:hover{color:var(--text);text-decoration:none}
-.nav-cta{background:var(--accent);color:#fff!important;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:500}
-.nav-cta:hover{background:var(--accent2);text-decoration:none!important}
-.hero{padding:120px 0 80px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);padding:5px 14px;border-radius:20px;font-size:12px;color:var(--text2);margin-bottom:24px}
-.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:44px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:18px;letter-spacing:-.5px}
-.hero h1 span{background:linear-gradient(135deg,var(--accent),#7c5cfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:17px;color:var(--text2);max-width:560px;margin:0 auto 36px}
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;transition:all .15s;border:none}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--accent2);text-decoration:none}
-.btn-ghost{background:var(--bg2);color:var(--text);border:1px solid var(--border)}
-.btn-ghost:hover{background:var(--bg3);text-decoration:none}
-.hero-meta{margin-top:28px;font-size:13px;color:var(--text3)}
-.hero-meta span{margin:0 10px}
-.section{padding:72px 0;border-top:1px solid var(--border)}
-.section-head{margin-bottom:40px}
-.section-head h2{font-size:28px;font-weight:600;color:#fff;margin-bottom:8px}
-.section-head p{font-size:15px;color:var(--text2)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;transition:border-color .15s}
-.card:hover{border-color:var(--accent)}
-.card-icon{width:40px;height:40px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
-.card h3{font-size:16px;font-weight:600;color:#fff;margin-bottom:6px}
-.card p{font-size:14px;color:var(--text2);line-height:1.6}
-.download-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:40px;text-align:center}
-.download-box .ver{font-size:13px;color:var(--text3);margin-bottom:6px}
-.download-box .name{font-size:22px;font-weight:600;color:#fff;margin-bottom:4px}
-.download-box .size{font-size:14px;color:var(--text2);margin-bottom:24px}
-.dl-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
-.req-table{width:100%;max-width:560px;margin:0 auto;border-collapse:collapse;font-size:14px}
-.req-table th,.req-table td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
-.req-table th{color:var(--text3);font-weight:500;width:40%}
-.req-table td{color:var(--text)}
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;counter-reset:step}
-.step{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;position:relative}
-.step::before{counter-increment:step;content:counter(step);position:absolute;top:20px;right:20px;width:26px;height:26px;border-radius:50%;background:var(--bg3);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
-.step h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;padding-right:30px}
-.step p{font-size:13px;color:var(--text2);line-height:1.6}
-.legal-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px}
-.legal-box h3{font-size:16px;font-weight:600;color:#fff;margin:20px 0 10px}
-.legal-box h3:first-child{margin-top:0}
-.legal-box p{font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.7}
-.legal-box .warn{color:var(--red);font-weight:500}
-.legal-box ul{margin:0 0 12px 20px}
-.legal-box li{font-size:14px;color:var(--text2);margin-bottom:6px}
-.footer{border-top:1px solid var(--border);padding:40px 0;margin-top:40px}
-.footer-inner{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px}
-.footer-brand .brand{margin-bottom:10px}
-.footer-brand p{font-size:13px;color:var(--text3);max-width:300px}
-.footer-links{display:flex;gap:48px}
-.footer-col h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px}
-.footer-col a{display:block;font-size:13px;color:var(--text3);margin-bottom:8px}
-.footer-col a:hover{color:var(--accent);text-decoration:none}
-.footer-bottom{border-top:1px solid var(--border);margin-top:32px;padding-top:20px;text-align:center;font-size:12px;color:var(--text3)}
-@media(max-width:640px){.hero h1{font-size:32px}.nav-links a:not(.nav-cta){display:none}.download-box{padding:24px}}
+.container{max-width:860px;margin:0 auto;padding:0 20px}
+
+header{border-bottom:1px solid #e5e5e5;padding:16px 0}
+.header-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:18px;font-weight:600;color:#1a1a1a}
+nav a{color:#555;font-size:14px;margin-left:24px}
+nav a:hover{color:#1a1a1a;text-decoration:none}
+
+.hero{padding:60px 0 48px;border-bottom:1px solid #e5e5e5}
+.hero h1{font-size:32px;font-weight:700;color:#1a1a1a;margin-bottom:16px;line-height:1.3}
+.hero p{font-size:16px;color:#555;margin-bottom:28px;max-width:600px}
+.hero .btn-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:10px 22px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;border:1px solid transparent}
+.btn-primary{background:#1a1a1a;color:#fff}
+.btn-primary:hover{background:#333;text-decoration:none}
+.btn-outline{background:#fff;color:#1a1a1a;border-color:#ccc}
+.btn-outline:hover{background:#f5f5f5;text-decoration:none}
+.hero .meta{margin-top:24px;font-size:13px;color:#888}
+.hero .meta span{margin-right:20px}
+
+section{padding:48px 0;border-bottom:1px solid #e5e5e5}
+section h2{font-size:22px;font-weight:600;color:#1a1a1a;margin-bottom:24px}
+section h3{font-size:16px;font-weight:600;color:#1a1a1a;margin:20px 0 10px}
+section p{color:#444;margin-bottom:14px}
+section ul{margin:0 0 14px 22px}
+section li{color:#444;margin-bottom:8px}
+
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.feature{padding:20px;border:1px solid #e5e5e5;border-radius:8px}
+.feature h3{margin-top:0;font-size:15px}
+.feature p{font-size:14px;color:#666;margin-bottom:0}
+
+.download-box{padding:28px;border:1px solid #e5e5e5;border-radius:8px;text-align:center}
+.download-box .version{font-size:13px;color:#888;margin-bottom:4px}
+.download-box .name{font-size:20px;font-weight:600;margin-bottom:4px}
+.download-box .size{font-size:14px;color:#666;margin-bottom:20px}
+.download-box .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid #e5e5e5}
+th{background:#f8f8f8;font-weight:600;color:#333;width:40%}
+td{color:#555}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.step{padding:18px;border:1px solid #e5e5e5;border-radius:8px;position:relative;padding-left:50px}
+.step .num{position:absolute;left:16px;top:18px;width:24px;height:24px;background:#1a1a1a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.step h3{margin-top:0;font-size:14px}
+.step p{font-size:13px;color:#666;margin-bottom:0}
+
+.legal{padding:28px;border:1px solid #e5e5e5;border-radius:8px}
+.legal h3{font-size:15px;font-weight:600;color:#1a1a1a;margin:20px 0 10px}
+.legal h3:first-child{margin-top:0}
+.legal p{font-size:14px;color:#555;margin-bottom:12px;line-height:1.8}
+.legal .warning{color:#b00020;font-weight:500}
+.legal ul{margin:0 0 12px 22px}
+.legal li{font-size:14px;color:#555;margin-bottom:6px}
+
+footer{padding:32px 0;background:#f8f8f8;border-top:1px solid #e5e5e5}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:20px}
+.footer-col h4{font-size:13px;font-weight:600;color:#333;margin-bottom:10px}
+.footer-col a{display:block;font-size:13px;color:#666;margin-bottom:6px}
+.footer-col a:hover{color:#1a1a1a}
+.footer-bottom{border-top:1px solid #e5e5e5;padding-top:16px;text-align:center;font-size:12px;color:#888}
+
+@media(max-width:600px){
+.hero h1{font-size:24px}
+nav a{display:none}
+nav a:last-child{display:inline}
+}
 </style>
 </head>
 <body>
-<nav class="nav"><div class="wrap nav-inner">
-<div class="brand"><div class="brand-dot">D</div>DeepSeek Harness</div>
-<div class="nav-links">
-<a href="#features">功能</a><a href="#download">下载</a><a href="#usage">使用</a><a href="docs.html">文档</a><a href="#legal">法律</a>
-<a href="#download" class="nav-cta">立即下载</a>
-</div></div></nav>
 
-<section class="hero"><div class="wrap">
-<div class="hero-badge"><span class="dot"></span>v2.43 已发布 · 免费开源</div>
-<h1>在手机上运行<br><span>AI Agent</span></h1>
-<p>DeepSeek Harness 移动端让你在安卓设备上直接运行本地 AI 模型，无需网络即可推理，也可切换在线 API 使用更大模型。</p>
-<div class="hero-btns">
-<a href="#download" class="btn btn-primary">⬇ 下载 APK</a>
-<a href="docs.html" class="btn btn-ghost">📖 查看文档</a>
+<header>
+<div class="container header-inner">
+<div class="logo">DeepSeek Harness 移动端</div>
+<nav>
+<a href="#features">功能</a>
+<a href="#download">下载</a>
+<a href="#usage">使用</a>
+<a href="docs.html">文档</a>
+<a href="#legal">法律</a>
+</nav>
 </div>
-<div class="hero-meta"><span>📦 746MB</span>·<span>🤖 0.5B 本地模型</span>·<span>📱 32/64 位支持</span>·<span>📜 MIT 许可证</span></div>
-</div></section>
+</header>
 
-<section class="section" id="features"><div class="wrap">
-<div class="section-head"><h2>功能特性</h2><p>为移动端优化的 AI 运行环境</p></div>
-<div class="grid">
-<div class="card"><div class="card-icon">🔌</div><h3>离线推理</h3><p>内置 0.5B 量化模型，完全断网也能进行 AI 对话和文本生成。</p></div>
-<div class="card"><div class="card-icon">🌐</div><h3>在线 API 切换</h3><p>支持 DeepSeek、OpenAI 等兼容 API，有网络时一键切换到更大模型。</p></div>
-<div class="card"><div class="card-icon">📱</div><h3>双架构支持</h3><p>同时支持 arm64-v8a 和 armeabi-v7a，老旧 32 位设备也能运行。</p></div>
-<div class="card"><div class="card-icon">🔗</div><h3>局域网访问</h3><p>服务启动后生成局域网链接，同一 Wi-Fi 下的电脑、平板也能使用。</p></div>
-<div class="card"><div class="card-icon">💻</div><h3>Linux 终端</h3><p>内置基础 Linux 命令环境，支持文件操作、脚本执行和网络工具。</p></div>
-<div class="card"><div class="card-icon">📁</div><h3>沙箱工作目录</h3><p>在外部存储创建独立工作文件夹，AI 操作被限制在指定范围内。</p></div>
-</div></div></section>
+<section class="hero">
+<div class="container">
+<h1>在安卓手机上运行本地 AI 模型</h1>
+<p>DeepSeek Harness 移动端是一款免费开源应用，内置 0.5B 量化模型，可在完全离线环境下进行 AI 对话和文本生成。同时支持配置在线 API，在有网络时切换到更大的模型。</p>
+<div class="btn-row">
+<a href="#download" class="btn btn-primary">下载 APK</a>
+<a href="docs.html" class="btn btn-outline">查看文档</a>
+</div>
+<div class="meta">
+<span>版本 v2.43</span>
+<span>大小 746MB</span>
+<span>支持 32/64 位</span>
+<span>MIT 许可证</span>
+</div>
+</div>
+</section>
 
-<section class="section" id="download"><div class="wrap">
-<div class="section-head"><h2>下载安装</h2><p>当前版本 v2.43</p></div>
+<section id="features">
+<div class="container">
+<h2>功能说明</h2>
+<div class="features">
+<div class="feature">
+<h3>本地离线推理</h3>
+<p>内置 0.5B 量化模型，无需网络连接即可使用。适合简单对话、文本生成和基础问答。</p>
+</div>
+<div class="feature">
+<h3>在线 API 切换</h3>
+<p>支持 DeepSeek、OpenAI 等兼容 OpenAI 格式的 API 服务，可在设置中配置地址、密钥和模型名称。</p>
+</div>
+<div class="feature">
+<h3>双架构支持</h3>
+<p>同时支持 arm64-v8a（64位）和 armeabi-v7a（32位）架构，老旧设备也可运行。</p>
+</div>
+<div class="feature">
+<h3>局域网访问</h3>
+<p>服务启动后生成局域网访问地址，同一 Wi-Fi 网络下的其他设备（电脑、平板）也可访问使用。</p>
+</div>
+<div class="feature">
+<h3>基础 Linux 环境</h3>
+<p>内置基础 Linux 命令和目录结构，支持文件操作、脚本执行和常用网络工具。</p>
+</div>
+<div class="feature">
+<h3>沙箱工作目录</h3>
+<p>在外部存储创建独立工作文件夹（/storage/emulated/0/DeepSeek Harness），AI 操作被限制在该目录范围内。</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="download">
+<div class="container">
+<h2>下载安装</h2>
 <div class="download-box">
-<div class="ver">最新稳定版</div>
+<div class="version">当前稳定版本</div>
 <div class="name">DeepSeek Harness Android v2.43</div>
-<div class="size">APK · 746MB · Android 7.0+</div>
-<div class="dl-btns">
-<a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases/download/v2.43/DeepSeek-Harness-Android-v2.43.apk" class="btn btn-primary">⬇ 下载 APK</a>
-<a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases" class="btn btn-ghost">所有版本</a>
+<div class="size">APK 安装包 · 746MB · 支持 Android 7.0 及以上</div>
+<div class="btn-row">
+<a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases/download/v2.43/DeepSeek-Harness-Android-v2.43.apk" class="btn btn-primary">下载 APK</a>
+<a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases" class="btn btn-outline">所有版本</a>
 </div>
-<table class="req-table">
+<table>
 <tr><th>Android 版本</th><td>7.0 (API 24) 及以上</td></tr>
-<tr><th>CPU 架构</th><td>arm64-v8a / armeabi-v7a</td></tr>
-<tr><th>运行内存</th><td>建议 4GB，最低 2GB</td></tr>
-<tr><th>存储空间</th><td>至少 2GB 可用</td></tr>
-<tr><th>网络</th><td>不需要（离线可用）</td></tr>
+<tr><th>CPU 架构</th><td>arm64-v8a / armeabi-v7a（不支持 x86）</td></tr>
+<tr><th>运行内存</th><td>最低 2GB，建议 4GB 以上</td></tr>
+<tr><th>存储空间</th><td>至少 2GB 可用空间</td></tr>
+<tr><th>网络</th><td>本地模型无需网络，在线 API 需要网络连接</td></tr>
 </table>
-</div></div></section>
+</div>
+</div>
+</section>
 
-<section class="section" id="usage"><div class="wrap">
-<div class="section-head"><h2>快速开始</h2><p>六步上手使用</p></div>
+<section id="usage">
+<div class="container">
+<h2>使用步骤</h2>
 <div class="steps">
-<div class="step"><h3>安装应用</h3><p>下载 APK 后点击安装，允许未知来源应用安装权限。</p></div>
-<div class="step"><h3>授予权限</h3><p>首次启动授予存储权限和电池优化白名单，确保后台稳定运行。</p></div>
-<div class="step"><h3>等待初始化</h3><p>首次启动自动解压应用和模型，中配设备约 2-3 分钟，请勿关闭。</p></div>
-<div class="step"><h3>启动服务</h3><p>初始化完成后 Node.js 服务自动启动，显示局域网访问链接。</p></div>
-<div class="step"><h3>开始对话</h3><p>应用内 WebView 自动加载界面，直接开始与 AI 对话。</p></div>
-<div class="step"><h3>配置设置</h3><p>右上角设置可配置在线 API、切换模型、启用动态壁纸、检测更新。</p></div>
-</div></div></section>
+<div class="step">
+<div class="num">1</div>
+<h3>安装应用</h3>
+<p>下载 APK 文件后点击安装，如提示未知来源，请在系统设置中允许安装。</p>
+</div>
+<div class="step">
+<div class="num">2</div>
+<h3>授予权限</h3>
+<p>首次启动时授予存储权限，建议同时允许电池优化白名单以保持后台运行。</p>
+</div>
+<div class="step">
+<div class="num">3</div>
+<h3>等待初始化</h3>
+<p>首次启动会自动解压应用文件和 AI 模型，中配设备约需 2 至 3 分钟，期间请勿关闭应用。</p>
+</div>
+<div class="step">
+<div class="num">4</div>
+<h3>启动服务</h3>
+<p>初始化完成后 Node.js 服务自动启动，界面显示本地和局域网访问地址。</p>
+</div>
+<div class="step">
+<div class="num">5</div>
+<h3>开始使用</h3>
+<p>应用内 WebView 自动加载操作界面，可直接开始对话。也可在其他设备浏览器中输入局域网地址访问。</p>
+</div>
+<div class="step">
+<div class="num">6</div>
+<h3>配置设置</h3>
+<p>点击右上角设置按钮，可配置在线 API 地址和密钥、切换本地或在线模型、检测应用更新。</p>
+</div>
+</div>
+</div>
+</section>
 
-<section class="section" id="legal"><div class="wrap">
-<div class="section-head"><h2>法律声明</h2><p>使用本软件前请仔细阅读</p></div>
-<div class="legal-box">
-<h3>开源许可证</h3>
-<p>本项目采用 <strong>MIT 许可证</strong>。你可以自由使用、复制、修改、合并、发布、分发本软件，但必须在所有副本中包含版权声明和许可声明。</p>
-<h3 class="warn">⚠ 禁止倒卖与盗版</h3>
-<p>本软件完全免费开源。<strong>严禁以下行为：</strong></p>
+<section id="legal">
+<div class="container">
+<h2>法律声明</h2>
+<div class="legal">
+
+<h3>版权与许可</h3>
+<p>本软件及官方网站由 ETC 开发，源代码以 MIT 许可证开源发布。软件名称、标识、文档及网站内容受《中华人民共和国著作权法》保护。</p>
+<p>用户可在 MIT 许可证范围内自由使用、复制、修改和分发本软件，但必须保留原始版权声明和许可声明。</p>
+
+<h3 class="warning">禁止行为</h3>
+<p>本软件完全免费开源，严禁以下行为：</p>
 <ul>
-<li>将本软件或其修改版本用于商业售卖、付费下载</li>
-<li>制作盗版安装包并在第三方平台分发获利</li>
-<li>移除软件中的版权声明和许可证信息</li>
+<li>将本软件或其修改版本用于商业售卖、付费下载或任何形式的盈利活动</li>
+<li>制作盗版安装包并在第三方平台分发、售卖获利</li>
+<li>移除或篡改软件中的版权声明、许可证信息和开发者标识</li>
 <li>冒充官方渠道发布修改版本并收取费用</li>
+<li>利用本软件从事任何违反法律法规的活动</li>
 </ul>
-<p>如需商业合作或定制开发，请联系开发者获取授权。</p>
-<h3>免责声明</h3>
-<p>本软件按"现状"提供，不提供任何明示或暗示的担保，包括但不限于适销性、特定用途适用性和非侵权性。使用本软件产生的任何风险由用户自行承担。</p>
-<p>本软件内置 AI 模型生成的内容仅供参考，不构成任何专业建议（包括但不限于法律、医疗、金融建议）。用户应对生成内容的准确性和合法性自行判断。</p>
-<h3>隐私政策</h3>
-<p>本软件不会收集或上传任何用户数据。所有对话记录和文件均存储在本地设备。使用在线 API 模式时，对话内容会发送到你配置的 API 服务商，请自行了解其隐私政策。</p>
-<h3>开发者信息</h3>
-<p>开发者：ETC<br>邮箱：et2416444244@outlook.com<br>GitHub：<a href="https://github.com/ETQWFD">@ETQWFD</a><br>项目仓库：<a href="https://github.com/ETQWFD/deepseek-harness-mobile">deepseek-harness-mobile</a></p>
-</div></div></section>
+<p>如有违反，开发者保留依法追究责任的权利，包括但不限于要求停止侵权、赔偿损失，并可向公安机关报案。</p>
 
-<footer class="footer"><div class="wrap">
+<h3>法律管辖</h3>
+<p>本软件的开发、发布和使用受中华人民共和国法律管辖。因使用本软件产生的任何争议或纠纷，应首先通过友好协商解决；协商不成的，任何一方均可向开发者所在地有管辖权的人民法院提起诉讼。</p>
+<p>如发现本软件被用于违法活动或存在侵权行为，可向当地公安机关报案，或通过以下方式联系开发者。</p>
+
+<h3>免责声明</h3>
+<p>本软件按"现状"提供，不提供任何明示或暗示的担保，包括但不限于适销性、特定用途适用性和非侵权性的担保。使用本软件产生的任何直接或间接损失，由使用者自行承担。</p>
+<p>本软件内置 AI 模型生成的所有内容仅供参考，不构成任何专业建议（包括但不限于法律、医疗、金融、投资建议）。使用者应对生成内容的准确性、合法性和适用性自行判断并承担相应责任。</p>
+
+<h3>隐私政策</h3>
+<p>本软件不会收集、上传或存储任何用户个人数据。所有对话记录、配置信息和生成文件均保存在用户本地设备中。</p>
+<p>使用在线 API 模式时，对话内容会发送到用户自行配置的第三方 API 服务商，相关数据处理适用该服务商的隐私政策，请使用者自行了解并承担相应风险。</p>
+
+<h3>联系方式</h3>
+<p>开发者：ETC<br>
+电子邮箱：et2416444244@outlook.com<br>
+GitHub 主页：<a href="https://github.com/ETQWFD">https://github.com/ETQWFD</a><br>
+项目仓库：<a href="https://github.com/ETQWFD/deepseek-harness-mobile">https://github.com/ETQWFD/deepseek-harness-mobile</a></p>
+
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
 <div class="footer-inner">
-<div class="footer-brand">
-<div class="brand"><div class="brand-dot">D</div>DeepSeek Harness</div>
-<p>在手机上运行 AI Agent。免费开源，采用 MIT 许可证。</p>
+<div class="footer-col">
+<h4>产品</h4>
+<a href="#features">功能说明</a>
+<a href="#download">下载安装</a>
+<a href="#usage">使用步骤</a>
 </div>
-<div class="footer-links">
-<div class="footer-col"><h4>产品</h4><a href="#features">功能特性</a><a href="#download">下载安装</a><a href="#usage">使用说明</a></div>
-<div class="footer-col"><h4>资源</h4><a href="docs.html">官方文档</a><a href="https://github.com/ETQWFD/deepseek-harness-mobile">GitHub 仓库</a><a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases">发布页面</a></div>
-<div class="footer-col"><h4>法律</h4><a href="#legal">法律声明</a><a href="#legal">MIT 许可证</a><a href="#legal">隐私政策</a></div>
+<div class="footer-col">
+<h4>资源</h4>
+<a href="docs.html">官方文档</a>
+<a href="https://github.com/ETQWFD/deepseek-harness-mobile">源代码</a>
+<a href="https://github.com/ETQWFD/deepseek-harness-mobile/releases">发布页面</a>
+</div>
+<div class="footer-col">
+<h4>法律</h4>
+<a href="#legal">法律声明</a>
+<a href="#legal">MIT 许可证</a>
+<a href="#legal">隐私政策</a>
 </div>
 </div>
-<div class="footer-bottom">© 2026 ETC · MIT License · 禁止倒卖和制作盗版</div>
-</div></footer>
+<div class="footer-bottom">
+© 2026 ETC · MIT License · 本软件受中华人民共和国法律保护 · 禁止商业售卖和盗版
+</div>
+</div>
+</footer>
+
 </body>
 </html>
