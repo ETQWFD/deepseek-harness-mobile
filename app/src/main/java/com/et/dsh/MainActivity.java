@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         root.addView(titleBar);
         // 副标题
         TextView subtitle = new TextView(this);
-        subtitle.setText("v2.40 · ETC+KU终极版 · 移动端运行时");
+        subtitle.setText("v2.43 · ETC+KU终极版 · 移动端运行时");
         subtitle.setTextColor(0xFF555577);
         subtitle.setTextSize(12);
         subtitle.setPadding(48, 0, 48, 24);

@@ -278,6 +278,38 @@ public class NodeService extends Service {
             pb.directory(appDir);
             pb.redirectErrorStream(true);
 
+            // 预检查：测试node是否能执行
+            broadcastStatus("正在验证运行环境...", false, null, null, 5);
+            try {
+                ProcessBuilder testPb = new ProcessBuilder(nodeBin, "--version");
+                testPb.environment().put("LD_LIBRARY_PATH", ldLibraryPath);
+                testPb.environment().put("PATH", path);
+                testPb.environment().put("HOME", home);
+                Process testProc = testPb.start();
+                BufferedReader testReader = new BufferedReader(new InputStreamReader(testProc.getInputStream()));
+                String nodeVersion = testReader.readLine();
+                int testExit = testProc.waitFor();
+                testReader.close();
+                if (testExit != 0 || nodeVersion == null) {
+                    Log.e(TAG, "Node预检查失败，exit=" + testExit);
+                    broadcastStatus("Node.js 运行时验证失败，正在尝试修复...", false, null, null, 0);
+                    // 尝试清除标记文件重新解压
+                    new File(appDir, ".extracted").delete();
+                    try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+                    if (restartCount < MAX_RESTARTS) {
+                        restartCount++;
+                        new Thread(this::startNode).start();
+                        return;
+                    }
+                } else {
+                    Log.d(TAG, "Node预检查通过: " + nodeVersion);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Node预检查异常", e);
+                broadcastStatus("运行环境异常: " + e.getMessage(), false, null, null, 0);
+            }
+
+            broadcastStatus("正在启动 DeepSeek Harness 服务...", false, null, null, 10);
             nodeProcess = pb.start();
             outputThread = new Thread(() -> readProcessOutput(nodeProcess));
             outputThread.start();

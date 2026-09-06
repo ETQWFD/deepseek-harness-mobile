@@ -261,7 +261,7 @@ public class SettingsActivity extends AppCompatActivity {
         root.addView(updateBtn);
 
         TextView versionInfo = new TextView(this);
-        versionInfo.setText("当前版本: v2.40 · ETC+KU终极版\n更新源: GitHub Release\n\n© 2026 ETC | MIT License\n官网: https://etqwfd.github.io/deepseek-harness-mobile");
+        versionInfo.setText("当前版本: v2.43 · ETC+KU终极版\n更新源: GitHub Release\n\n© 2026 ETC | MIT License\n官网: https://etqwfd.github.io/deepseek-harness-mobile");
         versionInfo.setTextColor(0xFF555577);
         versionInfo.setTextSize(10);
         versionInfo.setPadding(16, 8, 16, 0);
